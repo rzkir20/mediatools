@@ -1,0 +1,6 @@
+# Allow all crawlers
+User-agent: *
+Disallow:
+
+# Optionally point to your sitemap
+Sitemap: https://mediatools.biz.id/sitemap.xml
