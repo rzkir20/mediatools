@@ -260,7 +260,7 @@
                   <p class="text-center text-[10px] text-white/30 uppercase font-black tracking-widest">
                     {{
                       videoInfo.formatOptions?.length
-                        ? `Kualitas: ${videoInfo.formatOptions[selectedFormatIndex]?.label ?? "—"}`
+                        ? `Kualitas: ${videoInfo.formatOptions.find((o) => o.index === selectedFormatIndex)?.label ?? "—"}`
                         : "Video kualitas default"
                     }}
                   </p>

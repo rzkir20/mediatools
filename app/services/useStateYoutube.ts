@@ -40,23 +40,25 @@ function buildVideoInfo(
   const hasVideo = formats.some((f) => !f.isAudioOnly);
   const hasAudio = formats.some((f) => f.isAudioOnly);
 
+  // Keep all available video resolutions (non-audio-only),
+  // dedupe by `itag` so UI selection maps 1:1 to backend format choice.
   const videoFormats = formats
-    .filter((f) => !f.isAudioOnly && f.qualityLabel)
+    .filter((f) => !f.isAudioOnly)
     .sort(
       (a, b) =>
         parseQuality(b.qualityLabel ?? null) -
-        parseQuality(a.qualityLabel ?? null),
+          parseQuality(a.qualityLabel ?? null) ||
+        b.itag - a.itag,
     );
 
-  const seenLabels = new Set<string>();
+  const seenItags = new Set<number>();
   const formatOptions: { index: number; label: string }[] = [];
-  videoFormats.forEach((f, i) => {
-    const label = f.qualityLabel ?? `${i + 1}`;
-    const key = label.toUpperCase();
-    if (seenLabels.has(key)) return;
-    seenLabels.add(key);
-    formatOptions.push({ index: i, label });
-  });
+  for (const f of videoFormats) {
+    if (seenItags.has(f.itag)) continue;
+    seenItags.add(f.itag);
+    const label = f.qualityLabel ?? `Itag ${f.itag}`;
+    formatOptions.push({ index: f.itag, label });
+  }
 
   const previewVideoUrl = hasVideo
     ? withApiSecret(
@@ -123,17 +125,38 @@ export function useStateYoutube() {
     return buildVideoInfo(data, baseUrl, url);
   });
 
+  // Keep selection in sync with returned itags.
+  watch(
+    () => videoInfo.value?.formatOptions,
+    (opts) => {
+      if (opts?.length && opts[0]) selectedFormatIndex.value = opts[0].index;
+    },
+    { immediate: true },
+  );
+
   const effectivePreviewVideoUrl = computed(() => {
     const info = videoInfo.value;
     if (!info?.previewVideoUrl) return undefined;
     const opts = info.formatOptions;
-    const idx = selectedFormatIndex.value;
-    if (opts?.length) {
-      const safeIdx = Math.min(Math.max(0, idx), opts.length - 1);
-      const backendIndex = opts[safeIdx]?.index ?? safeIdx;
-      return `${info.previewVideoUrl}&quality=${backendIndex}`;
-    }
-    return info.previewVideoUrl;
+    if (!opts?.length) return info.previewVideoUrl;
+
+    const first = opts[0];
+    const selectedItag =
+      opts.find((o) => o.index === selectedFormatIndex.value)?.index ??
+      first?.index;
+
+    // TypeScript can't prove `first` exists even after `opts.length` checks.
+    // At runtime this should be safe, but we still guard to keep output valid.
+    if (selectedItag === undefined) return info.previewVideoUrl;
+
+    return `${info.previewVideoUrl}&quality=${encodeURIComponent(
+      String(selectedItag),
+    )}`;
+  });
+
+  // If preview previously failed, allow retry when user changes quality.
+  watch(effectivePreviewVideoUrl, () => {
+    videoLoadFailed.value = false;
   });
 
   const downloadLoading = computed(
@@ -429,17 +452,14 @@ export function useStateYoutube() {
     const url = searchUrl.value.trim();
     const info = videoInfo.value;
     if (!url || !info) return;
-    const opts = info.formatOptions;
-    const uiIndex = Math.min(
-      Math.max(0, selectedFormatIndex.value),
-      opts?.length ? opts.length - 1 : 0,
-    );
-    const qualityIndex = opts?.[uiIndex]?.index ?? uiIndex;
-    const qualityLabel = opts?.[uiIndex]?.label ?? "Default";
+    const opts = info.formatOptions ?? [];
+    const selectedOpt = opts.find((o) => o.index === selectedFormatIndex.value);
+    const qualityItag = selectedOpt?.index ?? opts[0]?.index ?? 0;
+    const qualityLabel = selectedOpt?.label ?? "Default";
     const filename = info.id ? `youtube_${info.id}.mp4` : "youtube_video.mp4";
 
     const params = new URLSearchParams({ url });
-    params.set("quality", String(qualityIndex));
+    params.set("quality", String(qualityItag));
     const downloadUrl = `${baseUrl}/api/${PLATFORM}/download?${params.toString()}`;
 
     openProgressModal(filename, [

@@ -6,21 +6,6 @@ const HISTORY_STORAGE_KEY = "facebook-download-history";
 const HISTORY_MAX = 50;
 const PLATFORM = "facebook";
 
-function facebookImageNeedsBackendProxy(url: string): boolean {
-  if (!url || !/^https:\/\//i.test(url)) return false;
-  try {
-    const h = new URL(url).hostname.toLowerCase();
-    return (
-      h.endsWith(".fbcdn.net") ||
-      h === "fbcdn.net" ||
-      h.endsWith(".fbsbx.com") ||
-      h === "fbsbx.com"
-    );
-  } catch {
-    return false;
-  }
-}
-
 function loadHistoryFromStorage(): HistoryItem[] {
   if (typeof window === "undefined") return [];
   try {
@@ -333,14 +318,7 @@ export function useStateFacebook() {
   }
 
   function getHistoryPreviewUrl(item: HistoryItem): string {
-    const c = item.cover || "";
-    if (!c) return "";
-    if (facebookImageNeedsBackendProxy(c)) {
-      return withApiSecret(
-        `${baseUrl}/api/${PLATFORM}/proxy-image?url=${encodeURIComponent(c)}`,
-      );
-    }
-    return c;
+    return item.cover || "";
   }
 
   function triggerBlobDownload(blob: Blob, filename: string) {

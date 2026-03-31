@@ -6,5 +6,4 @@ interface FacebookMetadataResponse {
   videoUrl?: string | null;
   videoUrlHd?: string | null;
   thumbnail?: string | null;
-  images?: string[] | null;
 }
