@@ -74,6 +74,15 @@
                     <p class="text-[11px] text-white/50">Simpan video YouTube dengan cepat.</p>
                   </div>
                 </NuxtLink>
+                <NuxtLink to="/threads"
+                  class="flex items-start gap-2 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/10 hover:text-[#FF3D57]"
+                  active-class="bg-white/10 text-[#FF3D57]">
+                  <iconify-icon icon="simple-icons:threads" class="mt-0.5 text-base" />
+                  <div>
+                    <p class="text-[13px] font-semibold">Threads Downloader</p>
+                    <p class="text-[11px] text-white/50">Simpan video Threads dengan cepat.</p>
+                  </div>
+                </NuxtLink>
               </div>
             </div>
           </div>

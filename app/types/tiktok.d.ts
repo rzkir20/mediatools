@@ -12,6 +12,12 @@ type VideoInfo = {
   images?: string[];
   cover?: string;
   previewImageUrls?: string[];
+  /** Threads: carousel order, each slide proxied for preview */
+  mediaItems?: Array<{
+    type: "image" | "video";
+    url: string;
+    previewUrl: string;
+  }>;
   text?: string;
   author?: string;
   duration?: string;
