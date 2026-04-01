@@ -1,12 +1,6 @@
 name = "mediatools"
-compatibility_date = "2024-09-23"
+compatibility_date = "2025-07-15"
 compatibility_flags = ["nodejs_compat"]
-
-[env.production]
-name = "mediatools"
-
-[env.production.vars]
-NODE_ENV = "production"
 
 [vars]
 NUXT_PUBLIC_API_URL = "https://be.mediatools.biz.id"
