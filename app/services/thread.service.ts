@@ -1,6 +1,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 
 import { useQuery } from "@tanstack/vue-query";
+import { toast } from "vue-sonner";
 
 import { useAppConfig, withApiSecret } from "~/lib/config";
 import { socialMetadataQueryDefaults } from "~/lib/queryOptions";
@@ -39,34 +40,47 @@ function triggerDirectDownload(url: string, filename?: string) {
   document.body.removeChild(a);
 }
 
+/** API hanya mengirim `mediaItems` + `videoUrl`; satukan jadi satu daftar slide. */
+function normalizeThreadSlides(
+  data: ThreadMetadataResponse,
+): ThreadApiMediaItem[] {
+  if (data.mediaItems?.length) return data.mediaItems;
+  if (data.videoUrl?.trim())
+    return [{ type: "video", url: data.videoUrl.trim() }];
+  return [];
+}
+
+function sliceTypeLabel(slides: ThreadApiMediaItem[]): HistoryItem["type"] {
+  const hasVid = slides.some((m) => m.type === "video");
+  const hasImg = slides.some((m) => m.type === "image");
+  return hasVid && !hasImg ? "Video" : "Image";
+}
+
 function buildVideoInfo(
   data: ThreadMetadataResponse,
   baseUrl: string,
 ): VideoInfo {
-  const proxiedVideoUrl = data.videoUrl
+  const slides = normalizeThreadSlides(data);
+  const primaryVideoUrl =
+    slides.find((m) => m.type === "video")?.url ??
+    data.videoUrl ??
+    undefined;
+  const proxiedVideoUrl = primaryVideoUrl
     ? withApiSecret(
-        `${baseUrl}/api/${PLATFORM}/preview-video?mediaUrl=${encodeURIComponent(data.videoUrl)}`,
+        `${baseUrl}/api/${PLATFORM}/preview-video?mediaUrl=${encodeURIComponent(primaryVideoUrl)}`,
       )
     : undefined;
-  const previewImageUrls = (data.images ?? []).map((imageUrl) =>
+
+  const flatImages = slides
+    .filter((m) => m.type === "image")
+    .map((m) => m.url);
+  const previewImageUrls = flatImages.map((imageUrl) =>
     withApiSecret(
       `${baseUrl}/api/${PLATFORM}/preview-image?mediaUrl=${encodeURIComponent(imageUrl)}`,
     ),
   );
 
-  const apiItems = data.mediaItems?.length
-    ? data.mediaItems
-    : [
-        ...(data.videoUrl
-          ? [{ type: "video" as const, url: data.videoUrl }]
-          : []),
-        ...(data.images ?? []).map((url) => ({
-          type: "image" as const,
-          url,
-        })),
-      ];
-
-  const mediaItems = apiItems.map((it) => ({
+  const mediaItems = slides.map((it) => ({
     type: it.type,
     url: it.url,
     previewUrl: withApiSecret(
@@ -77,10 +91,10 @@ function buildVideoInfo(
   const firstImageSlide = mediaItems.find((m) => m.type === "image");
 
   return {
-    videoUrl: data.videoUrl ?? undefined,
+    videoUrl: primaryVideoUrl ?? undefined,
     previewVideoUrl: proxiedVideoUrl,
-    images: data.images ?? undefined,
-    cover: firstImageSlide?.url ?? data.images?.[0] ?? undefined,
+    images: flatImages.length ? flatImages : undefined,
+    cover: firstImageSlide?.url ?? flatImages[0] ?? undefined,
     previewImageUrls: previewImageUrls.length ? previewImageUrls : undefined,
     mediaItems: mediaItems.length ? mediaItems : undefined,
     text: data.caption ?? undefined,
@@ -147,35 +161,32 @@ export function useStateThread() {
     return err instanceof Error ? err.message : err ? String(err) : "";
   });
 
-  watch([searchUrl, () => metadataQuery.data.value], () => {
-    const url = searchUrl.value;
-    const data = metadataQuery.data.value;
-    if (!url || !data) return;
+  /** Hanya saat response metadata baru dari server — bukan saat ganti slide (imageIndex). */
+  watch(
+    () => metadataQuery.dataUpdatedAt.value,
+    () => {
+      const url = searchUrl.value.trim();
+      const data = metadataQuery.data.value;
+      if (!url || !data || !metadataQuery.isSuccess.value) return;
 
-    const hasVid =
-      data.mediaItems?.some((m) => m.type === "video") ?? Boolean(data.videoUrl);
-    const hasImg =
-      data.mediaItems?.some((m) => m.type === "image") ??
-      Boolean(data.images?.length);
-    const item: HistoryItem = {
-      id: `${Date.now()}-${url.slice(-12)}`,
-      url,
-      title: (data.caption ?? "Threads Post").slice(0, 80),
-      cover:
-        data.mediaItems?.find((m) => m.type === "image")?.url ??
-        data.images?.[0] ??
-        (data.videoUrl || ""),
-      type: hasVid && !hasImg ? "Video" : "Image",
-      date: Date.now(),
-    };
+      const slides = normalizeThreadSlides(data);
+      const item: HistoryItem = {
+        id: `${Date.now()}-${url.slice(-12)}`,
+        url,
+        title: (data.caption ?? "Threads Post").slice(0, 80),
+        cover: slides[0]?.url ?? data.videoUrl?.trim() ?? "",
+        type: sliceTypeLabel(slides),
+        date: Date.now(),
+      };
 
-    const list = [
-      item,
-      ...historyItems.value.filter((historyItem) => historyItem.url !== url),
-    ].slice(0, HISTORY_MAX);
-    historyItems.value = list;
-    saveHistoryToStorage(list);
-  });
+      const list = [
+        item,
+        ...historyItems.value.filter((historyItem) => historyItem.url !== url),
+      ].slice(0, HISTORY_MAX);
+      historyItems.value = list;
+      saveHistoryToStorage(list);
+    },
+  );
 
   function onSearch() {
     const url = threadUrl.value.trim();
@@ -183,6 +194,22 @@ export function useStateThread() {
     imageIndex.value = 0;
     searchUrl.value = url;
   }
+
+  const onPaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text?.trim()) {
+        threadUrl.value = text.trim();
+        toast.success("Link berhasil ditempel");
+      } else {
+        toast.error("Clipboard kosong atau bukan teks");
+      }
+    } catch {
+      toast.error(
+        "Akses clipboard ditolak. Izinkan akses atau tempel manual (Ctrl+V)",
+      );
+    }
+  };
 
   function onDownloadCurrentSlide() {
     const slide = videoInfo.value?.mediaItems?.[imageIndex.value];
@@ -229,6 +256,7 @@ export function useStateThread() {
     downloadLoading,
     downloadError,
     onSearch,
+    onPaste,
     onDownloadCurrentSlide,
     onDownloadAnother,
     openHistoryItem,

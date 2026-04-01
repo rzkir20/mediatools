@@ -29,7 +29,7 @@
           aria-label="TikTok">
           <iconify-icon icon="logos:tiktok-icon" class="text-white" />
         </NuxtLink>
-        <NuxtLink to="https://github.com/rzkir"
+        <NuxtLink to="https://github.com/rzkir20"
           class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#FF3D57] hover:border-[#FF3D57] transition-all"
           aria-label="GitHub">
           <iconify-icon icon="lucide:github" class="text-white" />

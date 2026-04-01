@@ -15,8 +15,8 @@
           <span class="text-brand-gradient">All Social Media.</span>
         </h1>
         <p class="text-white/40 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-          The ultimate destination to download high-quality content from TikTok
-          and Instagram instantly. No watermarks, no limits, no login required.
+          The ultimate destination to download high-quality content from TikTok,
+          Instagram, and Threads instantly. No watermarks, no limits, no login required.
         </p>
       </div>
 
@@ -96,10 +96,11 @@
         </div>
       </div>
 
-      <!-- Service Cards -->
-      <div class="flex flex-wrap justify-center gap-8 lg:gap-10">
+      <!-- Service Cards: desktop = baris 2 + tengah 1 + baris 2 + full width -->
+      <div class="flex flex-col gap-8 lg:gap-10 w-full min-w-0">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 w-full min-w-0">
         <NuxtLink to="/tiktok"
-          class="group relative block w-full md:w-[calc(50%-1.25rem)] overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
+          class="group relative block w-full min-w-0 overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
           <div
             class="absolute -bottom-10 -right-10 w-64 h-64 bg-[#FF3D57] rounded-full blur-[100px] opacity-5 group-hover:opacity-20 transition-opacity">
           </div>
@@ -136,7 +137,7 @@
         </NuxtLink>
 
         <NuxtLink to="/instagram"
-          class="group relative block w-full md:w-[calc(50%-1.25rem)] overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
+          class="group relative block w-full min-w-0 overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
           <div
             class="absolute -bottom-10 -right-10 w-64 h-64 bg-[#bc1888] rounded-full blur-[100px] opacity-5 group-hover:opacity-20 transition-opacity">
           </div>
@@ -171,9 +172,50 @@
             <iconify-icon icon="lucide:arrow-right" />
           </span>
         </NuxtLink>
+        </div>
 
+        <div class="flex w-full justify-center min-w-0">
+        <NuxtLink to="/threads"
+          class="group relative block w-full min-w-0 overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
+          <div
+            class="absolute -bottom-10 -right-10 w-64 h-64 bg-white rounded-full blur-[100px] opacity-5 group-hover:opacity-20 transition-opacity">
+          </div>
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6 mb-10 sm:mb-12">
+            <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center">
+              <iconify-icon icon="simple-icons:threads" class="text-4xl text-white" />
+            </div>
+            <div class="text-left sm:text-right">
+              <span class="text-[10px] font-black uppercase tracking-widest text-white/70">Threads Service</span>
+              <h3 class="text-3xl font-black mt-1 font-heading">
+                Post & Media
+              </h3>
+            </div>
+          </div>
+          <ul class="space-y-4 sm:space-y-6 mb-10 sm:mb-12">
+            <li class="flex items-center gap-4 text-white/60 font-medium">
+              <iconify-icon icon="lucide:check-circle-2" class="text-white/80 shrink-0" />
+              Download video & gambar dari Threads
+            </li>
+            <li class="flex items-center gap-4 text-white/60 font-medium">
+              <iconify-icon icon="lucide:check-circle-2" class="text-white/80 shrink-0" />
+              Ambil caption & media dalam satu klik
+            </li>
+            <li class="flex items-center gap-4 text-white/60 font-medium">
+              <iconify-icon icon="lucide:check-circle-2" class="text-white/80 shrink-0" />
+              Tanpa login, cukup tempel link
+            </li>
+          </ul>
+          <span
+            class="inline-flex items-center gap-3 text-xs font-black uppercase tracking-widest hover:gap-5 transition-all">
+            Coba Threads Downloader
+            <iconify-icon icon="lucide:arrow-right" />
+          </span>
+        </NuxtLink>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 w-full min-w-0">
         <NuxtLink to="/facebook"
-          class="group relative block w-full md:w-[calc(50%-1.25rem)] overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
+          class="group relative block w-full min-w-0 overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
           <div
             class="absolute -bottom-10 -right-10 w-64 h-64 bg-[#1877F2] rounded-full blur-[100px] opacity-5 group-hover:opacity-20 transition-opacity">
           </div>
@@ -210,7 +252,7 @@
         </NuxtLink>
 
         <NuxtLink to="/youtube"
-          class="group relative block w-full md:w-[calc(50%-1.25rem)] overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
+          class="group relative block w-full min-w-0 overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
           <div
             class="absolute -bottom-10 -right-10 w-64 h-64 bg-[#FF0000] rounded-full blur-[100px] opacity-5 group-hover:opacity-20 transition-opacity">
           </div>
@@ -245,9 +287,10 @@
             <iconify-icon icon="lucide:arrow-right" />
           </span>
         </NuxtLink>
+        </div>
 
         <NuxtLink to="/docx-to-pdf"
-          class="group relative block w-full lg:w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
+          class="group relative block w-full min-w-0 overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] glass-card p-8 sm:p-10 lg:p-12 transition-all hover:border-white/20">
           <div
             class="absolute -bottom-10 -right-10 w-64 h-64 brand-gradient rounded-full blur-[100px] opacity-5 group-hover:opacity-20 transition-opacity">
           </div>
@@ -300,7 +343,7 @@
               Social Media Download
             </h4>
             <p class="text-white/40 text-sm leading-relaxed">
-              Download from TikTok, Instagram, Facebook, and YouTube—fast, clean,
+              Download from TikTok, Instagram, Threads, Facebook, and YouTube—fast, clean,
               and ready to save in one place.
             </p>
           </div>
