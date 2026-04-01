@@ -1,6 +1,7 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useAppConfig, withApiSecret } from "~/lib/config";
+import { socialMetadataQueryDefaults } from "~/lib/queryOptions";
 
 const HISTORY_STORAGE_KEY = "facebook-download-history";
 const HISTORY_MAX = 50;
@@ -78,6 +79,7 @@ export function useStateFacebook() {
     },
     enabled: computed(() => !!searchUrl.value.trim()),
     retry: false,
+    ...socialMetadataQueryDefaults,
   });
 
   const videoInfo = computed(() => {

@@ -6,6 +6,8 @@ import { useQuery, useMutation } from "@tanstack/vue-query";
 
 import { useAppConfig, withApiSecret } from "~/lib/config";
 
+import { socialMetadataQueryDefaults } from "~/lib/queryOptions";
+
 const HISTORY_STORAGE_KEY = "tiktok-download-history";
 const HISTORY_MAX = 50;
 const PLATFORM = "tiktok";
@@ -79,6 +81,7 @@ export function useStateTiktok() {
     },
     enabled: computed(() => !!searchUrl.value.trim()),
     retry: false,
+    ...socialMetadataQueryDefaults,
   });
 
   const videoInfo = computed(() => {

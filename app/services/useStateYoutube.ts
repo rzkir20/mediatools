@@ -1,6 +1,7 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useQuery, useMutation } from "@tanstack/vue-query";
 import { useAppConfig, withApiSecret } from "~/lib/config";
+import { socialMetadataQueryDefaults } from "~/lib/queryOptions";
 
 const HISTORY_STORAGE_KEY = "youtube-download-history";
 const HISTORY_MAX = 50;
@@ -116,6 +117,7 @@ export function useStateYoutube() {
     },
     enabled: computed(() => !!searchUrl.value.trim()),
     retry: false,
+    ...socialMetadataQueryDefaults,
   });
 
   const videoInfo = computed(() => {

@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 
 import { useAppConfig, withApiSecret } from "~/lib/config";
+import { socialMetadataQueryDefaults } from "~/lib/queryOptions";
 
 const HISTORY_STORAGE_KEY = "threads-download-history";
 const HISTORY_MAX = 50;
@@ -119,6 +120,7 @@ export function useStateThread() {
     },
     enabled: computed(() => !!searchUrl.value.trim()),
     retry: false,
+    ...socialMetadataQueryDefaults,
   });
 
   const videoInfo = computed(() => {

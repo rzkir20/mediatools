@@ -1,6 +1,7 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useQuery, useMutation } from "@tanstack/vue-query";
 import { useAppConfig, withApiSecret } from "~/lib/config";
+import { socialMetadataQueryDefaults } from "~/lib/queryOptions";
 
 const HISTORY_STORAGE_KEY = "instagram-download-history";
 const HISTORY_MAX = 50;
@@ -85,6 +86,7 @@ export function useStateInstagram() {
     },
     enabled: computed(() => !!searchUrl.value.trim()),
     retry: false,
+    ...socialMetadataQueryDefaults,
   });
 
   const videoInfo = computed(() => {
