@@ -1,77 +1,110 @@
-# Nuxt Minimal Starter
+# Media Tools
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Media Tools adalah aplikasi web all-in-one untuk mengunduh konten media sosial dan mengonversi dokumen.  
+Project ini dibangun dengan Nuxt 4 dan dirancang agar cepat, sederhana, dan mudah digunakan.
 
-## Setup
+Website produksi: [https://mediatools.biz.id/](https://mediatools.biz.id/)
 
-Make sure to install dependencies:
+## Fitur Utama
+
+- **Social media downloader**: TikTok, Instagram, Threads, Facebook, dan YouTube.
+- **Document converter**:
+  - Ke PDF: DOCX, Excel, PPT, HTML, JPG
+  - Dari PDF: DOCX, Excel, PPT, image
+- **Halaman download app native** untuk Android, Windows, dan Linux.
+- **UI modern & responsif** dengan Tailwind CSS.
+- **SEO ready** menggunakan konfigurasi Nuxt SEO meta.
+
+## Teknologi yang Digunakan
+
+- **Framework**: Nuxt 4 (Vue 3 + TypeScript)
+- **Styling**: Tailwind CSS
+- **UI utilities**: `vue-sonner`, `@vueuse/core`, `reka-ui`
+- **Build tool**: Vite
+
+## Persyaratan Sistem (Development)
+
+- Node.js 18+ (disarankan Node.js versi LTS terbaru)
+- npm / pnpm / yarn
+
+## Cara Menjalankan Project
+
+1. **Clone repository**
 
 ```bash
-# npm
+git clone <url-repository-anda>
+cd <nama-folder-project>
+```
+
+2. **Install dependencies**
+
+```bash
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+3. **Jalankan mode development**
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+4. **Buka di browser**
 
-Build the application for production:
+```text
+http://localhost:3000
+```
+
+## Build dan Preview Production
 
 ```bash
-# npm
+# Build aplikasi
 npm run build
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+# Preview hasil build
+npm run preview
 ```
 
-Locally preview production build:
+## Generate Static (Opsional)
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+npm run generate
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-# riz-downloader
-# mediatools
+## Environment Configuration
+
+Project menggunakan runtime config Nuxt:
+
+- `public.apiUrl`: endpoint API backend (jika dipakai)
+- `public.siteUrl`: URL website utama (default: `https://mediatools.biz.id`)
+
+Contoh file `.env`:
+
+```env
+NUXT_PUBLIC_API_URL=https://api.domainanda.com
+NUXT_PUBLIC_SITE_URL=https://mediatools.biz.id
+```
+
+## Struktur Halaman Utama
+
+- `/` : landing page + daftar semua tool
+- `/download` : download aplikasi Android/Windows/Linux
+- `/tiktok`, `/instagram`, `/threads`, `/facebook`, `/youtube`
+- `/docx-to-pdf`, `/excel-to-pdf`, `/ppt-to-pdf`, `/html-to-pdf`, `/jpg-to-pdf`
+- `/pdf-to-docx`, `/pdf-to-excel`, `/pdf-to-ppt`
+- `/privacy`, `/terms`, `/donasi`
+
+## Catatan Pengembangan
+
+- Pastikan link download dan endpoint API selalu diperbarui sebelum deploy.
+- Cek kembali metadata SEO per halaman agar konsisten dengan branding Media Tools.
+- Lakukan pengujian responsif untuk mobile, tablet, dan desktop.
+
+## Dukung Project Ini
+
+- Jangan lupa follow akun TikTok: [@Rizki Ramadhan](https://www.tiktok.com/@rzkir.20)
+- Jangan lupa follow akun Instagram: [@Rizki Ramadhan](https://www.instagram.com/rzkir.20)
+- Jika project ini bermanfaat, jangan lupa berikan Star di GitHub.
+
+## Lisensi
+
+Project ini menggunakan lisensi MIT. Lihat detail pada file `LICENSE`.
