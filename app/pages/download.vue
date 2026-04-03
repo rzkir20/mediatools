@@ -39,10 +39,6 @@
                   Rekomendasi otomatis untuk perangkatmu: <span class="text-white font-semibold">{{ recommendedLabel }}</span>
                 </p>
               </div>
-              <div class="inline-flex items-center gap-2 rounded-full bg-black/30 border border-white/10 px-3 py-1.5">
-                <iconify-icon icon="lucide:shield-check" class="text-emerald-300" />
-                <span class="text-[11px] font-semibold text-white/70">Verifikasi checksum disarankan</span>
-              </div>
             </div>
 
             <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -146,7 +142,7 @@
                   Latest release
                 </p>
                 <h3 class="mt-2 text-2xl sm:text-3xl font-black font-heading leading-tight">
-                  {{ latest.version }} <span class="text-white/40">·</span>
+                  {{ selectedVersion }} <span class="text-white/40">·</span>
                   <span class="text-white/70 text-base sm:text-lg font-semibold">{{ latestDateLabel }}</span>
                 </h3>
                 <p class="mt-2 text-sm text-white/60 max-w-xl">
@@ -183,25 +179,12 @@
                         {{ asset.name }}
                         <span class="text-white/40 font-medium">({{ asset.ext }})</span>
                       </p>
-                      <p class="text-xs text-white/50">
-                        {{ asset.sizeLabel }} · SHA-256 tersedia
-                      </p>
+                      <p class="text-xs text-white/50">{{ asset.sizeLabel }}</p>
                     </div>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-2 justify-end">
-                  <button
-                    type="button"
-                    class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/70 hover:text-white hover:bg-white/10 transition"
-                    :disabled="!asset.sha256"
-                    :class="!asset.sha256 ? 'opacity-50 cursor-not-allowed' : ''"
-                    @click="copyText(asset.sha256, 'Checksum disalin')"
-                    title="Copy SHA-256"
-                  >
-                    <iconify-icon icon="lucide:copy" class="text-sm" />
-                    Copy SHA
-                  </button>
                   <a
                     :href="asset.url || undefined"
                     target="_blank"
@@ -216,17 +199,6 @@
                     <iconify-icon icon="lucide:download" class="text-sm" />
                     {{ asset.url ? 'Download' : 'Coming soon' }}
                   </a>
-                </div>
-
-                <div v-if="asset.sha256" class="mt-3 sm:mt-0 sm:ml-2 w-full sm:w-auto sm:max-w-[340px]">
-                  <button
-                    type="button"
-                    class="w-full sm:w-auto text-left font-mono text-[11px] text-white/50 hover:text-white/70 transition truncate"
-                    @click="copyText(asset.sha256, 'Checksum disalin')"
-                    :title="asset.sha256"
-                  >
-                    {{ asset.sha256 }}
-                  </button>
                 </div>
               </div>
             </div>
@@ -245,11 +217,11 @@
                 <ul class="mt-2 space-y-2 text-sm text-white/60">
                   <li class="flex gap-2">
                     <span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                    <span>Verifikasi checksum SHA-256 setelah download.</span>
+                    <span>Download hanya dari link resmi di halaman ini.</span>
                   </li>
                   <li class="flex gap-2">
                     <span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                    <span>Download hanya dari link resmi di halaman ini.</span>
+                    <span>Pastikan kapasitas penyimpanan perangkat cukup sebelum instalasi.</span>
                   </li>
                   <li class="flex gap-2">
                     <span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
@@ -377,7 +349,6 @@ type Asset = {
   icon: string;
   url: string;
   sizeLabel: string;
-  sha256: string;
 };
 
 useSeoMeta({
@@ -386,7 +357,7 @@ useSeoMeta({
 });
 
 const latest = {
-  version: "v0.1.0",
+  version: "v1.0.0",
   dateISO: "2026-02-27",
   summary: "Rilis awal aplikasi native Media Tools. Link unduhan akan muncul di sini saat build sudah siap.",
   releaseNotesUrl: "",
@@ -397,9 +368,8 @@ const latest = {
       name: "Media Tools",
       ext: "APK",
       icon: "lucide:smartphone",
-      url: "",
-      sizeLabel: "—",
-      sha256: "",
+      url: "https://www.mediafire.com/file/viddoct1z35ga8i/media-tools.apk/file",
+      sizeLabel: "124.9 MB",
     },
     {
       id: "windows-exe",
@@ -409,7 +379,6 @@ const latest = {
       icon: "lucide:monitor",
       url: "",
       sizeLabel: "—",
-      sha256: "",
     },
     {
       id: "linux-appimage",
@@ -419,7 +388,6 @@ const latest = {
       icon: "lucide:terminal",
       url: "",
       sizeLabel: "—",
-      sha256: "",
     },
     {
       id: "linux-deb",
@@ -429,19 +397,24 @@ const latest = {
       icon: "lucide:package",
       url: "",
       sizeLabel: "—",
-      sha256: "",
     },
   ] satisfies Asset[],
 };
 
 const selectedPlatform = ref<Platform>("android");
 const recommendedPlatform = ref<Platform>("android");
+const platformVersions: Record<Platform, string> = {
+  android: "v1.0.0-android",
+  windows: "v0.1.0-windows",
+  linux: "v0.1.0-linux",
+};
 
 const recommendedLabel = computed(() => {
   if (recommendedPlatform.value === "android") return "Android";
   if (recommendedPlatform.value === "windows") return "Windows";
   return "Linux";
 });
+const selectedVersion = computed(() => platformVersions[selectedPlatform.value] || latest.version);
 const selectedPlatformLabel = computed(() => {
   if (selectedPlatform.value === "android") return "Android";
   if (selectedPlatform.value === "windows") return "Windows";
@@ -509,15 +482,6 @@ onMounted(() => {
     selectedPlatform.value = recommendedPlatform.value;
   }
 });
-
-async function copyText(text: string, successMsg: string) {
-  try {
-    await navigator.clipboard.writeText(text);
-    toast.success(successMsg);
-  } catch {
-    toast.error("Gagal menyalin. Coba salin manual.");
-  }
-}
 
 function submitWaitlist() {
   if (!canSubmitWaitlist.value) return;

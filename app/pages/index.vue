@@ -40,7 +40,7 @@
             </div>
 
             <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 justify-center items-stretch sm:items-center">
-              <button type="button"
+              <a href="https://www.mediafire.com/file/viddoct1z35ga8i/media-tools.apk/file" target="_blank" rel="noopener noreferrer"
                 class="inline-flex items-center gap-3 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:border-emerald-400 hover:bg-emerald-500/20">
                 <iconify-icon icon="logos:android-icon" class="text-xl" />
                 <span class="flex flex-col text-left leading-tight">
@@ -49,9 +49,9 @@
                   </span>
                   <span class="text-[11px] text-white/60">Download APK</span>
                 </span>
-              </button>
+              </a>
 
-              <button type="button"
+              <NuxtLink to="/download"
                 class="inline-flex items-center gap-3 rounded-2xl border border-sky-500/40 bg-sky-500/10 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:border-sky-400 hover:bg-sky-500/20">
                 <iconify-icon icon="logos:microsoft-windows" class="text-xl" />
                 <span class="flex flex-col text-left leading-tight">
@@ -60,9 +60,9 @@
                   </span>
                   <span class="text-[11px] text-white/60">Download Installer (.exe)</span>
                 </span>
-              </button>
+              </NuxtLink>
 
-              <button type="button"
+              <NuxtLink to="/download"
                 class="inline-flex items-center gap-3 rounded-2xl border border-amber-400/40 bg-amber-400/10 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:border-amber-300 hover:bg-amber-400/20">
                 <iconify-icon icon="logos:linux-tux" class="text-xl" />
                 <span class="flex flex-col text-left leading-tight">
@@ -71,7 +71,7 @@
                   </span>
                   <span class="text-[11px] text-white/60">Download AppImage / .deb</span>
                 </span>
-              </button>
+              </NuxtLink>
             </div>
           </div>
 
