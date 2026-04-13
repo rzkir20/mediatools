@@ -46,6 +46,11 @@ export default defineNuxtConfig({
           src: "https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js",
           defer: true,
         },
+        {
+          src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4016803466870090",
+          async: true,
+          crossorigin: "anonymous",
+        },
       ],
     },
   },
