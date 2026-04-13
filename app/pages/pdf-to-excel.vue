@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStatePdfToExcel } from "~/services/useStatePdfToExcel";
+import { useStatePdfToExcel } from "~/services/pdf-to-excel.service";
 
 const { file, hasFile, converting, downloadError, onFileChange, onConvert } =
   useStatePdfToExcel();

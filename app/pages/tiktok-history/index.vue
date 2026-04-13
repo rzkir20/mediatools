@@ -125,7 +125,7 @@
 
 <script setup lang="ts">
 import { Empty, EmptyHeader, EmptyContent } from "../../components/ui/empty";
-import { useStateTiktok } from "../../services/useStateTiktok";
+import { useStateTiktok } from "~/services/tiktok.service";
 
 const {
   historyItems,

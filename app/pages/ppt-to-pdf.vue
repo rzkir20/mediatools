@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStateConvertDoc } from "~/services/useStateConvertDoc";
+import { useStateConvertDoc } from "~/services/convert-doc.service";
 
 const {
   file,

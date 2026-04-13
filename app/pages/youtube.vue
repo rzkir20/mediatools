@@ -421,7 +421,7 @@ import { ref, watch } from "vue";
 import { toast } from "vue-sonner";
 import { Empty, EmptyHeader, EmptyContent } from "~/components/ui/empty";
 import LoadingProgress from "~/components/LoadingProgress.vue";
-import { useStateYoutube } from "~/services/useStateYoutube";
+import { useStateYoutube } from "~/services/youtube.service";
 
 const {
   videoUrl,

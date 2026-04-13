@@ -563,7 +563,7 @@
 
 <script setup lang="ts">
 import { toast } from "vue-sonner";
-import { useStateInstagram } from "~/services/useStateInstagram";
+import { useStateInstagram } from "~/services/instagram.service";
 import { Empty, EmptyHeader, EmptyContent } from "~/components/ui/empty";
 
 const {

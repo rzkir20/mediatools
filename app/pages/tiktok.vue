@@ -511,7 +511,7 @@
 <script setup lang="ts">
 import { Empty, EmptyHeader, EmptyContent } from "~/components/ui/empty";
 import LoadingProgress from "~/components/LoadingProgress.vue";
-import { useStateTiktok } from "~/services/useStateTiktok";
+import { useStateTiktok } from "~/services/tiktok.service";
 
 const {
   videoUrl,

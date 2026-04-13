@@ -285,7 +285,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { BANK_GUIDES, DONATION_PRESETS, GOPAY_NUMBER } from "~/lib/data";
-import { useStateDonasi } from "~/services/useStateDonasi";
+import { useStateDonasi } from "~/services/donasi.service";
 
 const {
   amount,

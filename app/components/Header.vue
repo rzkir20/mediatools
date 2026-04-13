@@ -319,7 +319,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStateHeader } from "~/services/useStateHeader";
+import { useStateHeader } from "~/services/header.service";
 
 const { menuOpen, servicesOpen, documentsOpen } = useStateHeader();
 const route = useRoute();

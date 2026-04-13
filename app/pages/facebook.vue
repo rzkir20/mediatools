@@ -454,7 +454,7 @@
 <script setup lang="ts">
 import { watch } from "vue";
 import { toast } from "vue-sonner";
-import { useStateFacebook } from "~/services/useStateFacebook";
+import { useStateFacebook } from "~/services/facebook.service";
 import { Empty, EmptyHeader, EmptyContent } from "~/components/ui/empty";
 import LoadingProgress from "~/components/LoadingProgress.vue";
 

@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStatePdfToPpt } from "~/services/useStatePdfToPpt";
+import { useStatePdfToPpt } from "~/services/pdf-to-ppt.service";
 
 const { file, hasFile, converting, downloadError, onFileChange, onConvert } =
   useStatePdfToPpt();
